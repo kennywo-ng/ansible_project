@@ -12,3 +12,7 @@
       - "IOS type: {{ switch.ansible_facts.ansible_net_iostype }}"
       - "Image: {{ switch.ansible_facts.ansible_net_image }}"
       - "VR Switch: {{ switch.ansible_facts.ansible_net_virtual_switch }}"
+
+- name: role test
+  roles:
+    role: df_test
