@@ -3,4 +3,4 @@
 - name: Show disk usage
   hosts: all
   roles:
-    - ../roles/df_test
+    - df_test
