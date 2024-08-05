@@ -15,4 +15,4 @@
 
 - name: role test
   roles:
-    role: df_test
+    role: ./roles/df_test
