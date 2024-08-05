@@ -6,4 +6,4 @@
 
 - name: Show disk usage output
   debug:
-    var: test.stdout
+    var: test
