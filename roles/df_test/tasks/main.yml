@@ -1,9 +1,9 @@
 # roles/print_df/tasks/main.yml
 ---
 - name: Print disk usage
-  shell: df -h
-  register: disk_usage
+  cisco.ios.ios_facts:
+  register: test
 
 - name: Show disk usage output
   debug:
-    var: disk_usage.stdout
+    var: test.stdout
