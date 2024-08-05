@@ -1,0 +1,9 @@
+---
+- name: Print Ansible config path
+  hosts: all
+  tasks:
+    - name: Display Ansible configuration file path
+      command: ansible-config dump --only-changed
+      register: config_output
+    - debug:
+        var: config_output.stdout
