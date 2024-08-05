@@ -1,3 +1,4 @@
+---
 - name: role test
   hosts: all
   roles:
