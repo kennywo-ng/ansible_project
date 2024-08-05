@@ -1,6 +1,6 @@
 ---
 - name: Test community.general.ping module
-  hosts: localhost
+  hosts: all
   tasks:
     - name: Ping using community.general.ping
       community.general.ping:
