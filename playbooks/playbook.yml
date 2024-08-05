@@ -1,18 +1,6 @@
----
-- name: CHECK CURRENT VERSION
-  cisco.ios.ios_facts:
-  register: switch
-
-- name: Display switch information
-  debug:
-    msg:
-      - "Hostname: {{ switch.ansible_facts.ansible_net_hostname }}"
-      - "Version: {{ switch.ansible_facts.ansible_net_version }}"
-      - "OS: {{ switch.ansible_facts.ansible_net_system }}"
-      - "IOS type: {{ switch.ansible_facts.ansible_net_iostype }}"
-      - "Image: {{ switch.ansible_facts.ansible_net_image }}"
-      - "VR Switch: {{ switch.ansible_facts.ansible_net_virtual_switch }}"
-
-- name: role test
-  roles:
-    role: ./roles/df_test
+- name: Hello World Sample
+  hosts: all
+  tasks:
+    - name: Hello Message
+      debug:
+        msg: "Hello World!"
