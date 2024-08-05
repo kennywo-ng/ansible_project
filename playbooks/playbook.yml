@@ -1,4 +1,6 @@
----
-- name: role test
-  roles:
-    role: ../roles/df_test
+- name: Hello World Sample
+  hosts: all
+  tasks:
+    - name: Hello Message
+      debug:
+        msg: "Hello World!"
