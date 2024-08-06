@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: yes
   vars:
-     logging_host_default: "logging host 1.0.0.0"
+     logging_host_default: "logging host 1.1.1.1"
      logging_host_gp_1: "logging host 2.2.2.2"
      logging_host_gp_2: "logging host 3.3.3.3"
      logging_host_gp_3: "logging host 4.4.4.4"
@@ -50,13 +50,13 @@
                 list
               }}
 
-        - name: test
-          debug:
-            var: remove_command
+#        - name: test
+#          debug:
+#            var: remove_command
 
-#        - name: Remove logging hosts
-#          cisco.ios.ios_config:
-#            lines: "{{ remove_command }}"
+        - name: Remove logging hosts
+          cisco.ios.ios_config:
+            lines: "{{ remove_command }}"
       when: not is_empty
 
     - name: Add vrf
@@ -64,11 +64,11 @@
         add_command: >-
           {{ logging_host_default }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
 
-    - name: test
-      debug:
-        var: add_command
+#    - name: test
+#      debug:
+#        var: add_command
 
-#    - name: Add logging hosts
-#      cisco.ios.ios_config:
-#        lines: "{{ add_command }}"
-#      when: add_command is defined and add_command | length > 0
+    - name: Add logging hosts
+      cisco.ios.ios_config:
+        lines: "{{ add_command }}"
+      when: add_command is defined and add_command | length > 0
