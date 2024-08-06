@@ -1,9 +1,9 @@
 # roles/print_df/tasks/main.yml
 ---
-- name: Print disk usage
+- name: Get device info
   cisco.ios.ios_facts:
-  register: test
+  register: device_info
 
-- name: Show disk usage output
+- name: Output device info
   debug:
-    var: test
+    var: device_info
