@@ -61,7 +61,7 @@
 
     - name: Add vrf
       set_fact:
-        add_command: >-
+        add_command: |-
           {{ logging_host_default }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
           {{ logging_host_gp_1 }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
 
