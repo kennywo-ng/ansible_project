@@ -2,4 +2,4 @@
 - name: role test
   hosts: all
   roles:
-    - role: df_test
+    - role: ../roles/df_test
