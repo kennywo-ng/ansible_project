@@ -1,0 +1,70 @@
+---
+- name: Standardizing Logging Host
+  hosts: all
+  gather_facts: yes
+  vars:
+    - logging_host_default: "logging host 1.0.0.0"
+    - logging_host_gp_1: "logging host 2.2.2.2"
+    - logging_host_gp_2: "logging host 3.3.3.3"
+    - logging_host_gp_3: "logging host 4.4.4.4"
+  tasks:
+    - name: Gather device information
+      cisco.ios.ios_facts:
+      register: device_facts
+
+    - name: Get show run
+      cisco.ios.ios_command:
+        commands:
+          - "show run | include logging host"
+      register: logging_output_v1
+
+    - name: Get show ip vrf
+      cisco.ios.ios_command:
+        commands:
+          - "show ip vrf"
+      register: ip_vrf_output_v1
+
+    - name: Check if logging host is empty or not
+      set_fact:
+        is_empty: >
+          {{
+            logging_output_v1.stdout_lines |
+            flatten |
+            select('match', '^.+$') |
+            length == 0
+          }}
+
+    - name: Check if vrf supported
+      set_fact:
+        vrf_sup: "{{ 'Mgmt-vrf' in ip_vrf_output_v1.stdout[0] }}"
+
+    - name: If logging host is not empty, run tasks
+      block:
+        - name: Create remove command
+          set_fact:
+            remove_command: >
+              {{
+                logging_output_v1.stdout_lines |
+                flatten |
+                map('regex_replace', '^', 'no ') |
+                list
+              }}
+
+        - name: test
+          debug:
+            var: remove_command
+
+#        - name: Remove logging hosts
+#          cisco.ios.ios_config:
+#            lines: "{{ remove_command }}"
+      when: not is_empty
+
+    - name: Add vrf
+      set_fact:
+        add_command: >-
+          {{ logging_host_default }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
+
+#    - name: Add logging hosts
+#      cisco.ios.ios_config:
+#        lines: "{{ add_command }}"
+#      when: add_command is defined and add_command | length > 0
