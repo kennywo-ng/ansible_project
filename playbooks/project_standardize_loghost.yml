@@ -67,7 +67,7 @@
 
     - name: test
       debug:
-        var: add_command.split('\n')
+        msg: "{{ add_command.split('\n') }}"
 
 #    - name: Add logging hosts
 #      cisco.ios.ios_config:
