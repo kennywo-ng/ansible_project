@@ -3,10 +3,10 @@
   hosts: all
   gather_facts: yes
   vars:
-    - logging_host_default: "logging host 1.0.0.0"
-    - logging_host_gp_1: "logging host 2.2.2.2"
-    - logging_host_gp_2: "logging host 3.3.3.3"
-    - logging_host_gp_3: "logging host 4.4.4.4"
+     logging_host_default: "logging host 1.0.0.0"
+     logging_host_gp_1: "logging host 2.2.2.2"
+     logging_host_gp_2: "logging host 3.3.3.3"
+     logging_host_gp_3: "logging host 4.4.4.4"
   tasks:
     - name: Gather device information
       cisco.ios.ios_facts:
@@ -63,6 +63,10 @@
       set_fact:
         add_command: >-
           {{ logging_host_default }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
+
+    - name: test
+      debug:
+        var: add_command
 
 #    - name: Add logging hosts
 #      cisco.ios.ios_config:
