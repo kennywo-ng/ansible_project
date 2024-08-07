@@ -3,17 +3,17 @@
   hosts: all
   gather_facts: yes
   vars:
-     logging_host_default: "logging host 1.1.1.1"
+     logging_host_default: "logging host 10.10.10.10"
   tasks:
     - name: Determine IP according to inventory file name
       set_fact:
         specify_log_host: >-
           {% if inventory_name == "Kenny_Test2" %}
-          logging host 2.2.2.2
+          logging host 20.20.20.20
           {% elif inventory_name == "Kenny_Test3" %}
-          logging host 3.3.3.3
+          logging host 30.30.30.30
           {% elif inventory_name == "Kenny_Test4" %}
-          logging host 4.4.4.4
+          logging host 40.40.40.40
           {% endif %}
 
     - name: Gather device information
