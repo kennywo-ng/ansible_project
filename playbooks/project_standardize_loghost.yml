@@ -71,7 +71,7 @@
       set_fact:
         add_command: |-
           {{ logging_host_default }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
-          {{ specify_log_host }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
+          {{ specify_log_host | trim }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
 
     - name: test
       debug:
