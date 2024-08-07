@@ -4,10 +4,18 @@
   gather_facts: yes
   vars:
      logging_host_default: "logging host 1.1.1.1"
-     logging_host_gp_1: "logging host 2.2.2.2"
-     logging_host_gp_2: "logging host 3.3.3.3"
-     logging_host_gp_3: "logging host 4.4.4.4"
   tasks:
+    - name: Determine IP according to inventory file name
+      set_fact:
+        specify_log_host: >-
+          {% if inventory_name == "Kenny_Test2" %}
+          logging host 2.2.2.2
+          {% elif inventory_name == "Kenny_Test3" %}
+          logging host 3.3.3.3
+          {% elif inventory_name == "Kenny_Test4" %}
+          logging host 4.4.4.4
+          {% endif %}
+
     - name: Gather device information
       cisco.ios.ios_facts:
       register: device_facts
@@ -50,26 +58,26 @@
                 list
               }}
 
-#        - name: test
-#          debug:
-#            var: remove_command
+        - name: test
+          debug:
+            var: remove_command
 
-        - name: Remove logging hosts
-          cisco.ios.ios_config:
-            lines: "{{ remove_command }}"
+#        - name: Remove logging hosts
+#          cisco.ios.ios_config:
+#            lines: "{{ remove_command }}"
       when: not is_empty
 
     - name: Add vrf
       set_fact:
         add_command: |-
           {{ logging_host_default }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
-          {{ logging_host_gp_1 }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
+          {{ specify_log_host }}{{ ' vrf Mgmt-vrf' if vrf_sup else '' }}
 
-#    - name: test
-#      debug:
-#        msg: "{{ add_command.split('\n') }}"
+    - name: test
+      debug:
+        msg: "{{ add_command.split('\n') }}"
 
-    - name: Add logging hosts
-      cisco.ios.ios_config:
-        lines: "{{ add_command.split('\n') }}"
-      when: add_command is defined and add_command | length > 0
+#    - name: Add logging hosts
+#      cisco.ios.ios_config:
+#        lines: "{{ add_command.split('\n') }}"
+#      when: add_command is defined and add_command | length > 0
