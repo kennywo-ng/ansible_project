@@ -9,7 +9,7 @@
 #        state: absent
   - name: Print to txt
     shell: |
-      printf "%s\n" "abc" >> /tmp/output.txt
+      printf "%s\n" "11123333444" >> /tmp/output.txt
 
 #- name: Get Info
 #  hosts: all
