@@ -1,12 +1,12 @@
 ---
-- name: Get Info
-  hosts: localhost
-  gather_facts: no
-  tasks:
-    - name: Remove file if it exists
-      file:
-        path: "/tmp/output.txt"
-        state: absent
+#- name: Get Info
+#  hosts: localhost
+#  gather_facts: no
+#  tasks:
+#    - name: Remove file if it exists
+#      file:
+#        path: "/tmp/output.txt"
+#        state: absent
 
 - name: Get Info
   hosts: all
@@ -59,6 +59,10 @@
           {% endfor %}
           {% endif %}
 
-    - name: Print to txt
-      shell: |
-        printf "%s\n" "{{ output_message }}" >> /tmp/output.txt
+    - name: test
+      debug:
+        var: output_message
+
+#    - name: Print to txt
+#      shell: |
+#        printf "%s\n" "{{ output_message }}" >> /tmp/output.txt
