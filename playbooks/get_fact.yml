@@ -1,5 +1,11 @@
 ---
 - name: role test
   hosts: all
+  tasks:
+    - name: Print inventory name
+      debug:
+        msg: "The selected inventory is {{ inventory_name }}"
   roles:
     - role: ../roles/df_test
+
+  
