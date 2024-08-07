@@ -1,0 +1,64 @@
+---
+- name: Get Info
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Remove file if it exists
+      file:
+        path: "/tmp/output.txt"
+        state: absent
+
+- name: Get Info
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Get device hostname
+      cisco.ios.ios_command:
+        commands:
+          - show run | include hostname
+      register: hostname_output
+
+    - name: Get device logging line
+      cisco.ios.ios_command:
+        commands:
+          - show run | include logging host
+      register: logging_line_output
+
+    - name: Extract hostname
+      set_fact:
+        hostname: "{{ hostname_output.stdout_lines[0][0].strip().split(' ')[1] }}"
+
+    - name: Ensure hostname is not empty
+      assert:
+        that:
+          - hostname != ''
+        fail_msg: "Hostname output is empty."
+
+    - name: Check if logging host is empty or not
+      set_fact:
+        is_empty: >
+          {{
+            logging_line_output.stdout_lines |
+            flatten |
+            select('match', '^.+$') |
+            length == 0
+          }}
+
+    - name: Capture formatted output
+      set_fact:
+        output_message: |
+          Hostname: {{ hostname }}
+          Logging lines:
+          {% if is_empty %}
+          Empty
+          {% else %}
+          {% for sublist in logging_line_output.stdout_lines %}
+          {% for line in sublist %}
+          {{ line.strip() }}
+          {% endfor %}
+          {% endfor %}
+          {% endif %}
+
+    - name: Print to txt
+      shell: |
+        printf "%s\n" "{{ output_message }}" >> /tmp/output.txt
